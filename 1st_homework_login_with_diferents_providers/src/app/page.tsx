@@ -7,13 +7,14 @@ import {
   User,
   linkWithPopup,
 } from "firebase/auth";
-import { auth, googleProvider, facebookProvider } from "@/credentials";
-import { AppUser } from "@/types/user";
-import { Auth } from "@/components/Auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, googleProvider, facebookProvider, db } from "@/credentials";
+import { AppUser, AppUserExtended } from "@/types/user";
+import { Auth } from "@/components/auth";
 import "@/styles/app.css";
 
 function App() {
-  const [user, setUser] = useState<AppUser | null>(null);
+  const [user, setUser] = useState<AppUser | AppUserExtended | null>(null);
 
   const linkGoogle = () => {
     if (auth.currentUser) {
@@ -34,15 +35,31 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(
       auth,
-      (firebaseUser: User | null) => {
+      async (firebaseUser: User | null) => {
         if (firebaseUser) {
-          const appUser: AppUser = {
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            displayName: firebaseUser.displayName,
-            providers: firebaseUser.providerData.map((p) => p.providerId),
-          };
-          setUser(appUser);
+          const userDocRef = doc(db, "users", firebaseUser.uid);
+          const userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists()) {
+            const extendedUser: AppUserExtended = {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              displayName: firebaseUser.displayName,
+              providers: firebaseUser.providerData.map((p) => p.providerId),
+              address: userDoc.data().address,
+              birthdate: userDoc.data().birthdate,
+              age: userDoc.data().age,
+            };
+            setUser(extendedUser);
+          } else {
+            const appUser: AppUser = {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              displayName: firebaseUser.displayName,
+              providers: firebaseUser.providerData.map((p) => p.providerId),
+            };
+            setUser(appUser);
+          }
         } else {
           setUser(null);
         }
@@ -76,6 +93,19 @@ function App() {
           <p>
             <strong>Proveedores vinculados:</strong> {user.providers.join(", ")}
           </p>
+          {"address" in user && (
+            <>
+              <p>
+                <strong>Dirección:</strong> {user.address}
+              </p>
+              <p>
+                <strong>Fecha de nacimiento:</strong> {user.birthdate}
+              </p>
+              <p>
+                <strong>Edad:</strong> {user.age}
+              </p>
+            </>
+          )}
 
           <div style={{ marginTop: "1.5rem" }}>
             <button
