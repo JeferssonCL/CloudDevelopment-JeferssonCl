@@ -1,0 +1,71 @@
+.app-container {
+  max-width: 400px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+h1,
+h2,
+h3 {
+  text-align: center;
+}
+
+.input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.button-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.google {
+  background-color: #db4437;
+  color: white;
+}
+
+.facebook {
+  background-color: #3b5998;
+  color: white;
+}
+
+.link {
+  background-color: #ffc107;
+}
+
+.logout {
+  background-color: #dc3545;
+  color: white;
+  margin-top: 1rem;
+}
+
+.user-info {
+  text-align: center;
+}
