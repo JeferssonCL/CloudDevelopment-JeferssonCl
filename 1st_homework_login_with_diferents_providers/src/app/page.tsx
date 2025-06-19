@@ -12,9 +12,13 @@ import { auth, googleProvider, facebookProvider, db } from "@/credentials";
 import { AppUser, AppUserExtended } from "@/types/user";
 import { Auth } from "@/components/auth";
 import "@/styles/app.css";
+import { PostsList } from "@/components/postsList";
+import { CreatePostModal } from "@/components/createPostModal";
 
 function App() {
   const [user, setUser] = useState<AppUser | AppUserExtended | null>(null);
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  const [refreshPosts, setRefreshPosts] = useState(0);
 
   const linkGoogle = () => {
     if (auth.currentUser) {
@@ -30,6 +34,10 @@ function App() {
         .then(() => alert("Cuenta de Facebook vinculada"))
         .catch((e) => alert("Error: " + e.message));
     }
+  };
+
+  const handlePostCreated = () => {
+    setRefreshPosts((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -70,73 +78,74 @@ function App() {
   }, []);
 
   return (
-    <div
-      className="app-container"
-      style={{ maxWidth: "600px", margin: "0 auto", padding: "2rem" }}
-    >
-      <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>
-        Firebase Auth App
-      </h1>
+    <div className="app-container">
+      <h1>Firebase Auth App con Posts</h1>
 
       {user ? (
-        <div
-          className="user-info"
-          style={{
-            backgroundColor: "#f5f5f5",
-            padding: "2rem",
-            borderRadius: "8px",
-          }}
-        >
-          <p>
-            <strong>Bienvenido:</strong> {user.email}
-          </p>
-          <p>
-            <strong>Proveedores vinculados:</strong> {user.providers.join(", ")}
-          </p>
-          {"address" in user && (
-            <>
-              <p>
-                <strong>Dirección:</strong> {user.address}
-              </p>
-              <p>
-                <strong>Fecha de nacimiento:</strong> {user.birthdate}
-              </p>
-              <p>
-                <strong>Edad:</strong> {user.age}
-              </p>
-            </>
-          )}
+        <div>
+          <div className="user-info">
+            <p>
+              <strong>Bienvenido:</strong> {user.email}
+            </p>
+            <p>
+              <strong>Proveedores vinculados:</strong>{" "}
+              {user.providers.join(", ")}
+            </p>
 
-          <div style={{ marginTop: "1.5rem" }}>
-            <button
-              className="btn logout"
-              onClick={() => signOut(auth)}
-              style={{ marginBottom: "1rem", width: "100%" }}
-            >
-              Cerrar sesión
-            </button>
+            {"address" in user && (
+              <>
+                <p>
+                  <strong>Dirección:</strong> {user.address}
+                </p>
+                <p>
+                  <strong>Fecha de nacimiento:</strong> {user.birthdate}
+                </p>
+                <p>
+                  <strong>Edad:</strong> {user.age}
+                </p>
+              </>
+            )}
 
-            <hr style={{ margin: "1.5rem 0" }} />
-            <h3 style={{ marginBottom: "1rem" }}>Asociar proveedores</h3>
-            <button
-              className="btn link"
-              onClick={linkGoogle}
-              style={{ width: "100%", marginBottom: "1rem" }}
-            >
-              Vincular Google
-            </button>
-            <button
-              className="btn link"
-              onClick={linkFacebook}
-              style={{ width: "100%" }}
-            >
-              Vincular Facebook
-            </button>
+            <div className="user-actions">
+              <button
+                className="btn create-post"
+                onClick={() => setIsCreatePostModalOpen(true)}
+                style={{ marginBottom: "1rem" }}
+              >
+                Crear Post
+              </button>
+
+              <button
+                className="btn logout"
+                onClick={() => signOut(auth)}
+                style={{ marginBottom: "1rem" }}
+              >
+                Cerrar sesión
+              </button>
+
+              <hr />
+              <h3>Asociar proveedores</h3>
+              <button className="btn link" onClick={linkGoogle}>
+                Vincular Google
+              </button>
+              <button className="btn link" onClick={linkFacebook}>
+                Vincular Facebook
+              </button>
+            </div>
           </div>
+
+          <CreatePostModal
+            user={user}
+            isOpen={isCreatePostModalOpen}
+            onClose={() => setIsCreatePostModalOpen(false)}
+            onPostCreated={handlePostCreated}
+          />
         </div>
       ) : (
         <Auth />
       )}
+
+      <PostsList key={refreshPosts} />
     </div>
   );
 }
