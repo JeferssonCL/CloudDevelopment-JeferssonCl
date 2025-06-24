@@ -37,7 +37,6 @@ export function CreatePostModal({
 
     setIsUploading(true);
     try {
-      // Crear el post
       const docRef = await addDoc(collection(db, "posts"), {
         userId: user.uid,
         userEmail: user.email,

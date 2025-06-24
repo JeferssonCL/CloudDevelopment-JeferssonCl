@@ -47,9 +47,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create a single MulticastMessage object
     const message: admin.messaging.MulticastMessage = {
-      tokens, // Array of tokens
+      tokens,
       notification: {
         title: notification.title,
         body: notification.body,
@@ -57,7 +56,6 @@ export async function POST(request: Request) {
       data: data || {},
     };
 
-    // Use sendEachForMulticast instead of sendMulticast
     const response = await admin.messaging().sendEachForMulticast(message);
 
     console.log("Successfully sent messages:", response);

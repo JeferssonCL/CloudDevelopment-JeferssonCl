@@ -9,14 +9,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { db, getFCMToken } from "@/credentials";
-
-interface NotificationData {
-  title: string;
-  body: string;
-  userId: string;
-  postId?: string;
-  type: "new_post" | "like" | "comment";
-}
+import { NotificationData } from "@/types/notification";
 
 export const saveUserFCMToken = async (userId: string): Promise<void> => {
   try {

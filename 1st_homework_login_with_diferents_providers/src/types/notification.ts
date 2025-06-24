@@ -16,3 +16,11 @@ export interface Notification {
 export interface NotificationsListProps {
   user: AppUser | AppUserExtended;
 }
+
+export interface NotificationData {
+  title: string;
+  body: string;
+  userId: string;
+  postId?: string;
+  type: "new_post" | "like" | "comment";
+}
