@@ -13,9 +13,11 @@ import { db } from "@/credentials";
 import { Timestamp } from "firebase/firestore";
 import "@/styles/notifications.css";
 import { IoIosNotifications } from "react-icons/io";
-import { Notification, NotificationsListProps } from "@/types/notification";
+import { Notification } from "@/types/notification";
+import { useAuth } from "@/context/authContext";
 
-export function NotificationsList({ user }: NotificationsListProps) {
+export function NotificationsList() {
+  const { user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);

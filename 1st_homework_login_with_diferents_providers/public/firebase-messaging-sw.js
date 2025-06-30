@@ -6,13 +6,13 @@ importScripts(
 );
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBm8pM_LxbtlKQ9zhU76lqhWvEiqwtitxo",
-  authDomain: "pruebasdesarrolloenlanube.firebaseapp.com",
-  projectId: "pruebasdesarrolloenlanube",
-  storageBucket: "pruebasdesarrolloenlanube.firebasestorage.app",
-  messagingSenderId: "541219366264",
-  appId: "1:541219366264:web:c5b2cc5b2a2bb0c748948d",
-  measurementId: "G-JR40SQKSRB",
+  apiKey: "AIzaSyCICAUQT4rp9OYGoPE18M6-BY-3IrOAwac",
+  authDomain: "pruebasdesarrolloenlanub-abc75.firebaseapp.com",
+  projectId: "pruebasdesarrolloenlanub-abc75",
+  storageBucket: "pruebasdesarrolloenlanub-abc75.firebasestorage.app",
+  messagingSenderId: "444320753186",
+  appId: "1:444320753186:web:9a669a30e730acde690c7b",
+  measurementId: "G-ZNZD7VXHPW",
 };
 
 firebase.initializeApp(firebaseConfig);

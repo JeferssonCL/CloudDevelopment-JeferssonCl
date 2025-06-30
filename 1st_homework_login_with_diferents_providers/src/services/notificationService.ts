@@ -85,8 +85,6 @@ export const sendNotificationToUsers = async (
     if (!response.ok) {
       throw new Error("Failed to send notification");
     }
-
-    console.log("Notifications sent successfully");
   } catch (error) {
     console.error("Error sending notifications:", error);
   }
@@ -115,7 +113,6 @@ export const createUserNotifications = async (
     });
 
     await batch.commit();
-    console.log("User notifications created successfully");
   } catch (error) {
     console.error("Error creating user notifications:", error);
   }

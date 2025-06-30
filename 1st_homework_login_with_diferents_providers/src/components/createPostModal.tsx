@@ -7,29 +7,34 @@ import type {
 } from "next-cloudinary";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/credentials";
-import { AppUser, AppUserExtended } from "@/types/user";
 import { notifyNewPost } from "@/services/notificationService";
 import Image from "next/image";
+import { useAuth } from "@/context/authContext";
 
 interface CreatePostModalProps {
-  user: AppUser | AppUserExtended;
   isOpen: boolean;
   onClose: () => void;
   onPostCreated: () => void;
 }
 
 export function CreatePostModal({
-  user,
   isOpen,
   onClose,
   onPostCreated,
 }: CreatePostModalProps) {
+  const { user } = useAuth();
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<{ url: string; publicId: string }[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!user) {
+      alert("No estás autenticado. Por favor, inicia sesión.");
+      return;
+    }
+
     if (images.length === 0 || !description.trim()) {
       alert("Por favor, sube al menos una imagen y añade una descripción");
       return;
