@@ -1,17 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  onAuthStateChanged,
-  signOut,
-  User,
-  linkWithPopup,
-} from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, googleProvider, facebookProvider, db } from "@/credentials";
+import { signOut, linkWithPopup } from "firebase/auth";
+import { auth, googleProvider, facebookProvider } from "@/credentials";
 import { MessagePayload, onMessage } from "firebase/messaging";
 import { messaging } from "@/credentials";
-import { AppUser, AppUserExtended } from "@/types/user";
 import { Auth } from "@/components/auth/auth";
 import "@/styles/app.css";
 import { PostsList } from "@/components/postsList";
@@ -20,6 +13,7 @@ import {
   requestNotificationPermission,
   saveUserFCMToken,
 } from "@/services/notificationService";
+import { useAuth } from "@/context/authContext";
 
 interface Notification {
   title: string;
@@ -27,7 +21,7 @@ interface Notification {
 }
 
 function App() {
-  const [user, setUser] = useState<AppUser | AppUserExtended | null>(null);
+  const { user, loading } = useAuth();
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
   const [refreshPosts, setRefreshPosts] = useState(0);
   const [notification, setNotification] = useState<Notification | null>(null);
@@ -61,57 +55,17 @@ function App() {
     try {
       const hasPermission = await requestNotificationPermission();
 
-      if (hasPermission) {
-        await saveUserFCMToken(userId);
-        console.log("Notificaciones configuradas correctamente");
-      } else {
-        console.log("Permisos de notificación denegados");
-      }
+      if (hasPermission) await saveUserFCMToken(userId);
+      else console.log("Permisos de notificación denegados");
     } catch (error) {
       console.error("Error configurando notificaciones:", error);
     }
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      async (firebaseUser: User | null) => {
-        if (firebaseUser) {
-          const userDocRef = doc(db, "users", firebaseUser.uid);
-          const userDoc = await getDoc(userDocRef);
-
-          if (userDoc.exists()) {
-            const extendedUser: AppUserExtended = {
-              uid: firebaseUser.uid,
-              email: firebaseUser.email,
-              displayName: firebaseUser.displayName,
-              providers: firebaseUser.providerData.map((p) => p.providerId),
-              address: userDoc.data().address,
-              birthdate: userDoc.data().birthdate,
-              age: userDoc.data().age,
-            };
-            setUser(extendedUser);
-          } else {
-            const appUser: AppUser = {
-              uid: firebaseUser.uid,
-              email: firebaseUser.email,
-              displayName: firebaseUser.displayName,
-              providers: firebaseUser.providerData.map((p) => p.providerId),
-            };
-            setUser(appUser);
-          }
-          await setupNotifications(firebaseUser.uid);
-        } else {
-          setUser(null);
-        }
-      }
-    );
-
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
     if (!user) return;
+
+    setupNotifications(user.uid);
 
     if (!messaging) {
       console.warn(
@@ -121,8 +75,6 @@ function App() {
     }
 
     const unsubscribe = onMessage(messaging, (payload: MessagePayload) => {
-      console.log("Mensaje recibido en primer plano:", payload);
-
       if (payload.notification) {
         showNotification(
           payload.notification.title || "Nueva notificación",
@@ -133,6 +85,10 @@ function App() {
 
     return () => unsubscribe();
   }, [user]);
+
+  if (loading) {
+    return <div className="loading">Cargando...</div>;
+  }
 
   return (
     <div className="app-container">
@@ -202,7 +158,6 @@ function App() {
           </div>
 
           <CreatePostModal
-            user={user}
             isOpen={isCreatePostModalOpen}
             onClose={() => setIsCreatePostModalOpen(false)}
             onPostCreated={handlePostCreated}

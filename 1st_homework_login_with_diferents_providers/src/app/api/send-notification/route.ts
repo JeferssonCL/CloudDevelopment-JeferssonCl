@@ -58,8 +58,6 @@ export async function POST(request: Request) {
 
     const response = await admin.messaging().sendEachForMulticast(message);
 
-    console.log("Successfully sent messages:", response);
-
     const failedTokens: string[] = [];
     response.responses.forEach(
       (resp: admin.messaging.SendResponse, idx: number) => {

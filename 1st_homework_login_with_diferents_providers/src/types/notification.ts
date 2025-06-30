@@ -1,5 +1,4 @@
 import { Timestamp } from "firebase/firestore";
-import { AppUser, AppUserExtended } from "./user";
 
 export interface Notification {
   id: string;
@@ -12,11 +11,6 @@ export interface Notification {
   createdAt: Timestamp;
   read?: boolean;
 }
-
-export interface NotificationsListProps {
-  user: AppUser | AppUserExtended;
-}
-
 export interface NotificationData {
   title: string;
   body: string;

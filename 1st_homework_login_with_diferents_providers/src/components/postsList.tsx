@@ -57,8 +57,14 @@ export function PostsList() {
                 <p className="post-description">{post.description}</p>
                 <div className="post-meta">
                   <span className="post-author">
-                    Por: {post.userDisplayName}
+                    Por:{" "}
+                    {post.userDisplayName &&
+                    post.userDisplayName.toLowerCase() !== "unknown" &&
+                    post.userDisplayName.toLowerCase() !== "usuario"
+                      ? post.userDisplayName
+                      : post.userEmail}
                   </span>
+
                   <span className="post-date">
                     {post.createdAt.toLocaleDateString("es-ES")}
                   </span>
