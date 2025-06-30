@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import type {
@@ -9,6 +8,7 @@ import type {
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/credentials";
 import { AppUser, AppUserExtended } from "@/types/user";
+import { notifyNewPost } from "@/services/notificationService";
 import Image from "next/image";
 
 interface CreatePostModalProps {
@@ -30,16 +30,14 @@ export function CreatePostModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (images.length === 0 || !description.trim()) {
       alert("Por favor, sube al menos una imagen y añade una descripción");
       return;
     }
 
     setIsUploading(true);
-
     try {
-      await addDoc(collection(db, "posts"), {
+      const docRef = await addDoc(collection(db, "posts"), {
         userId: user.uid,
         userEmail: user.email,
         userDisplayName: user.displayName || "Usuario",
@@ -51,15 +49,31 @@ export function CreatePostModal({
         createdAt: serverTimestamp(),
       });
 
-      // Resetear formulario
+      console.log("Post creado con ID:", docRef.id);
+
+      try {
+        await notifyNewPost(
+          user.uid,
+          user.displayName || user.email || "Usuario",
+          docRef.id
+        );
+        alert(
+          "Post creado exitosamente! Se ha notificado a todos los usuarios."
+        );
+      } catch (notificationError) {
+        console.error("Error enviando notificaciones:", notificationError);
+        alert(
+          "Post creado exitosamente, pero hubo un problema enviando las notificaciones."
+        );
+      }
+
       setDescription("");
       setImages([]);
       onPostCreated();
       onClose();
-      alert("Post creado exitosamente!");
     } catch (error) {
       console.error("Error creando post:", error);
-      alert("Error al crear el post");
+      alert("Error al crear el post: " + (error as Error).message);
     } finally {
       setIsUploading(false);
     }
@@ -94,7 +108,6 @@ export function CreatePostModal({
             ×
           </button>
         </div>
-
         <form onSubmit={handleSubmit} className="post-form">
           <div className="upload-section">
             <CldUploadWidget
@@ -112,7 +125,6 @@ export function CreatePostModal({
                 </button>
               )}
             </CldUploadWidget>
-
             {images.length > 0 && (
               <div className="image-preview-grid">
                 {images.map((image, index) => (
@@ -137,7 +149,6 @@ export function CreatePostModal({
             )}
             <small>{images.length}/5 imágenes</small>
           </div>
-
           <div className="description-section">
             <textarea
               value={description}
@@ -149,7 +160,6 @@ export function CreatePostModal({
             />
             <small>{description.length}/500 caracteres</small>
           </div>
-
           <div className="form-actions">
             <button
               type="button"
@@ -166,7 +176,9 @@ export function CreatePostModal({
                 isUploading || images.length === 0 || !description.trim()
               }
             >
-              {isUploading ? "Publicando..." : "Publicar"}
+              {isUploading
+                ? "Publicando y enviando notificaciones..."
+                : "Publicar"}
             </button>
           </div>
         </form>

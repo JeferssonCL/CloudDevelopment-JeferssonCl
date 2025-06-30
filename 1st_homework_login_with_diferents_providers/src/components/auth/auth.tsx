@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import "@/styles/auth-style.css";
 import { LoginForm } from "./loginForm";
 import { RegisterForm } from "./registerForm";
-import "@/styles/auth-style.css";
 
 export const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);

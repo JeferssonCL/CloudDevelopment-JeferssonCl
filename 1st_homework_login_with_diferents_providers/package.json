@@ -13,11 +13,13 @@
     "@hookform/resolvers": "^5.1.1",
     "axios": "^1.10.0",
     "firebase": "^11.9.1",
+    "firebase-admin": "^13.4.0",
     "next": "15.3.3",
     "next-cloudinary": "^6.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.57.0",
+    "react-icons": "^5.5.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {
