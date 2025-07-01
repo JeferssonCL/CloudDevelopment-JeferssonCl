@@ -16,5 +16,5 @@ export interface NotificationData {
   body: string;
   userId: string;
   postId?: string;
-  type: "new_post" | "like" | "comment";
+  type: "new_post" | "like" | "comment" | "post_reaction";
 }

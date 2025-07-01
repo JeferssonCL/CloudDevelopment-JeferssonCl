@@ -7,7 +7,7 @@ import { MessagePayload, onMessage } from "firebase/messaging";
 import { messaging } from "@/credentials";
 import { Auth } from "@/components/auth/auth";
 import "@/styles/app.css";
-import { PostsList } from "@/components/postsList";
+import { PostsList } from "@/components/posts/postsList";
 import { CreatePostModal } from "@/components/createPostModal";
 import {
   requestNotificationPermission,
@@ -118,6 +118,9 @@ function App() {
 
           {"address" in user && (
             <>
+              <p>
+                <strong>Nombre Completo:</strong> {user.displayName}
+              </p>
               <p>
                 <strong>Dirección:</strong> {user.address}
               </p>
