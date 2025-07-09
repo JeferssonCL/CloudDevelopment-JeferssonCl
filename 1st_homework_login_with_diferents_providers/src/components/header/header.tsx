@@ -50,7 +50,7 @@ export function Header() {
   return (
     <header className="app-header">
       <h1>Mi Sitio Web</h1>
-      {user && <NotificationsList user={user} />}
+      {user && <NotificationsList />}
     </header>
   );
 }

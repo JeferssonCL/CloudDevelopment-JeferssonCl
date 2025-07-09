@@ -542,3 +542,52 @@
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 }
+
+.post-reactions {
+  display: flex;
+  gap: 16px;
+}
+
+/* Estilo general de los botones de reacción */
+.reaction-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Estado deshabilitado */
+.reaction-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Botón de like */
+.like-button:hover:not(.disabled) {
+  background-color: #e6f3ea;
+}
+
+/* Botón de like activo */
+.like-button.active {
+  background-color: #d1fae5;
+  color: #15803d;
+}
+
+/* Botón de dislike */
+.dislike-button:hover:not(.disabled) {
+  background-color: #fee2e2;
+}
+
+/* Botón de dislike activo */
+.dislike-button.active {
+  background-color: #fecaca;
+  color: #b91c1c;
+}

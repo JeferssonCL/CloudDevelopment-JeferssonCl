@@ -4,12 +4,20 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AppUserExtended, RegisterFormValues } from "@/types/user";
 import * as yup from "yup";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider, facebookProvider } from "@/credentials";
 import "@/styles/auth-style.css";
 
 const registerSchema: yup.ObjectSchema<RegisterFormValues> = yup.object({
+  displayName: yup
+    .string()
+    .required("Nombre requerido")
+    .min(2, "Mínimo 2 caracteres"),
   email: yup.string().email("Correo inválido").required("Correo requerido"),
   password: yup
     .string()
@@ -64,10 +72,15 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
       );
       const uid = userCred.user.uid;
 
+      // Opcional: actualizar el displayName del usuario en Firebase Auth
+      await updateProfile(userCred.user, {
+        displayName: data.displayName,
+      });
+
       const extendedUser: AppUserExtended = {
         uid,
         email: data.email,
-        displayName: userCred.user.displayName,
+        displayName: data.displayName,
         providers: userCred.user.providerData.map((p) => p.providerId),
         address: data.address,
         birthdate: data.birthdate,
@@ -96,6 +109,19 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
     <div className="auth-container">
       <form onSubmit={form.handleSubmit(onRegister)} className="auth-form">
         <h2 className="auth-title">Crear Cuenta</h2>
+
+        <div className="form-group">
+          <input
+            placeholder="Nombre completo"
+            className="form-input"
+            {...form.register("displayName")}
+          />
+          {form.formState.errors.displayName && (
+            <p className="error-message">
+              {form.formState.errors.displayName.message}
+            </p>
+          )}
+        </div>
 
         <div className="form-row">
           <div className="form-group">
