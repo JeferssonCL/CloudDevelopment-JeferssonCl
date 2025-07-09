@@ -110,7 +110,6 @@ const Footer = () => {
             </Box>
           </Box>
 
-          {/* Columna 4 - Redes sociales */}
           <Box>
             <Typography
               variant="subtitle1"
@@ -180,7 +179,6 @@ const Footer = () => {
           </Box>
         </Box>
 
-        {/* Línea divisoria y copyright */}
         <Box
           sx={{
             borderTop: "1px solid #282828",

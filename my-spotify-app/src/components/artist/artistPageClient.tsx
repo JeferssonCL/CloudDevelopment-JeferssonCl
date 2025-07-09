@@ -31,7 +31,6 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
       try {
         setLoading(true);
 
-        // Obtener el artista específico
         const artistData = await getArtist(artistId);
         if (!artistData) {
           router.push("/artists");
@@ -39,11 +38,9 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
         }
         setArtist(artistData);
 
-        // Obtener canciones del artista
         const artistSongs = await getSongsByArtist(artistId);
         setSongs(artistSongs);
 
-        // Obtener todos los géneros y filtrar los del artista
         const allGenres = await getGenres();
         const artistGenres = allGenres.filter((genre) =>
           artistData.genreIds.includes(genre.id)
@@ -77,7 +74,6 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4, color: "white" }}>
-      {/* Sección superior: Imagen e información del artista */}
       <Box
         sx={{
           display: "flex",
@@ -87,7 +83,6 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
           alignItems: { xs: "center", md: "flex-start" },
         }}
       >
-        {/* Imagen del artista - Lado izquierdo */}
         <Box
           sx={{
             flexShrink: 0,
@@ -109,7 +104,6 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
           />
         </Box>
 
-        {/* Información del artista - Lado derecho */}
         <Box sx={{ flex: 1 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
             <Typography
@@ -147,7 +141,6 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
             {artist.description}
           </Typography>
 
-          {/* Sección de géneros */}
           {genres.length > 0 && (
             <Box sx={{ mb: 3 }}>
               <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 500 }}>
@@ -201,7 +194,6 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
         </Box>
       </Box>
 
-      {/* Divisor */}
       <Divider
         sx={{
           my: 4,
@@ -210,7 +202,6 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
         }}
       />
 
-      {/* Sección de canciones */}
       <Box>
         <Typography
           variant="h4"

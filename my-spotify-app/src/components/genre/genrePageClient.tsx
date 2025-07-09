@@ -29,7 +29,6 @@ const GenreClientPage = ({ genreId }: GenreClientPageProps) => {
       try {
         setLoading(true);
 
-        // Obtener el género específico
         const allGenres = await getGenres();
         const foundGenre = allGenres.find((g) => g.id === genreId);
 
@@ -40,7 +39,6 @@ const GenreClientPage = ({ genreId }: GenreClientPageProps) => {
 
         setGenre(foundGenre);
 
-        // Obtener artistas del género
         const genreArtists = await getArtists(genreId);
         setArtists(genreArtists);
       } catch (error) {
@@ -71,7 +69,6 @@ const GenreClientPage = ({ genreId }: GenreClientPageProps) => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4, color: "white" }}>
-      {/* Sección superior: Imagen e información del género */}
       <Box
         sx={{
           display: "flex",
@@ -81,7 +78,6 @@ const GenreClientPage = ({ genreId }: GenreClientPageProps) => {
           alignItems: { xs: "center", md: "flex-start" },
         }}
       >
-        {/* Imagen del género - Lado izquierdo */}
         <Box
           sx={{
             flexShrink: 0,
@@ -103,7 +99,6 @@ const GenreClientPage = ({ genreId }: GenreClientPageProps) => {
           />
         </Box>
 
-        {/* Información del género - Lado derecho */}
         <Box sx={{ flex: 1 }}>
           <Typography
             variant="h3"
@@ -143,7 +138,6 @@ const GenreClientPage = ({ genreId }: GenreClientPageProps) => {
         </Box>
       </Box>
 
-      {/* Divisor */}
       <Divider
         sx={{
           my: 4,
@@ -152,7 +146,6 @@ const GenreClientPage = ({ genreId }: GenreClientPageProps) => {
         }}
       />
 
-      {/* Sección de artistas */}
       <Box>
         <Typography
           variant="h4"

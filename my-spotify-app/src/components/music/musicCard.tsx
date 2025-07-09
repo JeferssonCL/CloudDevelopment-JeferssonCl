@@ -53,7 +53,6 @@ const SongCard = ({ song, isPlaying = false, onPlayClick }: SongCardProps) => {
           position: "relative",
         }}
       >
-        {/* Imagen de la canción */}
         <CardMedia
           component="img"
           height="180"
@@ -65,7 +64,6 @@ const SongCard = ({ song, isPlaying = false, onPlayClick }: SongCardProps) => {
           }}
         />
 
-        {/* Overlay de reproducción */}
         <Box
           sx={{
             position: "absolute",
@@ -103,7 +101,6 @@ const SongCard = ({ song, isPlaying = false, onPlayClick }: SongCardProps) => {
           </IconButton>
         </Box>
 
-        {/* Información de la canción */}
         <Box sx={{ p: 2 }}>
           <Typography
             variant="subtitle1"
