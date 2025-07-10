@@ -86,6 +86,7 @@ const SongCard = ({ song, isPlaying = false, onPlayClick }: SongCardProps) => {
             onClick={(e) => {
               e.stopPropagation();
               if (onPlayClick) onPlayClick();
+              router.push(`/songs/${song.id}`);
             }}
             sx={{
               backgroundColor: "#01c4e7",
@@ -106,7 +107,7 @@ const SongCard = ({ song, isPlaying = false, onPlayClick }: SongCardProps) => {
             variant="subtitle1"
             component="div"
             fontWeight="bold"
-            color="text.primary"
+            color="white"
             sx={{
               whiteSpace: "nowrap",
               overflow: "hidden",
@@ -124,7 +125,7 @@ const SongCard = ({ song, isPlaying = false, onPlayClick }: SongCardProps) => {
           >
             <Typography
               variant="body2"
-              color="text.secondary"
+              color="#01c4e7"
               sx={{
                 whiteSpace: "nowrap",
                 overflow: "hidden",

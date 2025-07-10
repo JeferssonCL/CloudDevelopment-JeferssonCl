@@ -9,11 +9,15 @@ import {
   Chip,
   Divider,
   Stack,
+  IconButton,
 } from "@mui/material";
-import { getArtist, getSongsByArtist, getGenres } from "@/services/firestore";
+import { getSongsByArtist } from "@/services/songsService";
 import { Artist, Song, Genre } from "@/types/music";
 import { useRouter } from "next/navigation";
 import SongCard from "@/components/music/musicCard";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getGenres } from "@/services/genresService";
+import { getArtist } from "@/services/artistsService";
 
 interface ArtistClientPageProps {
   artistId: string;
@@ -81,6 +85,7 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
           gap: 4,
           mb: 4,
           alignItems: { xs: "center", md: "flex-start" },
+          position: "relative",
         }}
       >
         <Box
@@ -103,6 +108,21 @@ const ArtistClientPage = ({ artistId }: ArtistClientPageProps) => {
             variant="square"
           />
         </Box>
+        <IconButton
+          onClick={() => router.back()}
+          sx={{
+            color: "white",
+            position: "absolute",
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            right: 0,
+            top: 0,
+            "&:hover": {
+              backgroundColor: "rgba(10, 150, 192, 0.7)",
+            },
+          }}
+        >
+          <ArrowBackIcon sx={{ fontSize: 30 }} />
+        </IconButton>
 
         <Box sx={{ flex: 1 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>

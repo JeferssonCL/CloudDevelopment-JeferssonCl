@@ -9,10 +9,11 @@ import {
   Chip,
   Divider,
 } from "@mui/material";
-import { getGenres, getArtists } from "@/services/firestore";
+import { getArtists } from "@/services/artistsService";
 import { Genre, Artist } from "@/types/music";
 import { useRouter } from "next/navigation";
 import ArtistCard from "@/components/artist/artistCard";
+import { getGenres } from "@/services/genresService";
 
 interface GenreClientPageProps {
   genreId: string;

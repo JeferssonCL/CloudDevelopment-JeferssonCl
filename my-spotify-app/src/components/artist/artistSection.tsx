@@ -5,7 +5,7 @@ import { Box, Container, Typography } from "@mui/material";
 import Slider from "react-slick";
 import ArtistCard from "./artistCard";
 import { Artist } from "@/types/music";
-import { getArtists } from "@/services/firestore";
+import { getArtists } from "@/services/artistsService";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -57,7 +57,7 @@ const ArtistList: React.FC<ArtistListProps> = ({ genreId = null }) => {
       <Typography
         color="white"
         sx={{
-          fontSize: { xs: "0.5rem", md: "1rem", lg: "0.5rem" },
+          fontSize: "1rem",
           fontWeight: 700,
           mb: 3,
           pl: 1,

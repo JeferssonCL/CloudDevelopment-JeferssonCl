@@ -41,7 +41,10 @@ export default function MenuAppBar() {
         sx={{ backgroundColor: "black", pl: 2, pr: 2, pt: 1, pb: 1 }}
       >
         <Toolbar>
-          <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+          <Box
+            onClick={() => router.push("/")}
+            sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}
+          >
             <Image
               src="https://i.postimg.cc/sxjdWdcK/Whats-App-Image-2025-07-09-at-14-25-55.jpgg"
               alt="Music Hall Logo"
@@ -112,6 +115,30 @@ export default function MenuAppBar() {
             disableAutoFocus={false}
             disableRestoreFocus={false}
           >
+            <MenuItem
+              onClick={() => {
+                router.push("/admin/songs");
+                handleClose();
+              }}
+            >
+              Administrar canciones
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                router.push("/admin/artists");
+                handleClose();
+              }}
+            >
+              Administrar artistas
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                router.push("/admin/genres");
+                handleClose();
+              }}
+            >
+              Administrar géneros
+            </MenuItem>
             <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
           </Menu>
         </Toolbar>

@@ -11,7 +11,7 @@ import {
   Chip,
   LinearProgress,
 } from "@mui/material";
-import { getSongById, getArtist } from "@/services/firestore";
+import { getSongById } from "@/services/songsService";
 import { Song, Artist } from "@/types/music";
 import { useRouter } from "next/navigation";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -21,6 +21,8 @@ import SkipNextIcon from "@mui/icons-material/SkipNext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getArtist } from "@/services/artistsService";
 
 interface SongPageProps {
   songId: string;
@@ -127,8 +129,24 @@ const SongPlayerPage = ({ songId }: SongPageProps) => {
           gap: 4,
           mb: 6,
           alignItems: "center",
+          position: "relative",
         }}
       >
+        <IconButton
+          onClick={() => router.back()}
+          sx={{
+            color: "white",
+            position: "absolute",
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            right: 0,
+            top: 0,
+            "&:hover": {
+              backgroundColor: "rgba(10, 150, 192, 0.7)",
+            },
+          }}
+        >
+          <ArrowBackIcon sx={{ fontSize: 30 }} />
+        </IconButton>
         <Box
           sx={{
             flexShrink: 0,

@@ -5,7 +5,7 @@ import { Box, Container, Typography } from "@mui/material";
 import Slider from "react-slick";
 import GenreCard from "./genreCard";
 import { Genre } from "@/types/music";
-import { getGenres } from "@/services/firestore";
+import { getGenres } from "@/services/genresService";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -70,7 +70,7 @@ const GenreList: React.FC = () => {
       <Typography
         color="white"
         sx={{
-          fontSize: { xs: "0.5rem", md: "1rem", lg: "0.5rem" },
+          fontSize: "1rem",
           fontWeight: 700,
           mb: 3,
           pl: 1,
